@@ -1,0 +1,6 @@
+.venv/
+.vscode/
+__pycache__/
+test/
+*.pt
+mic_idx.txt
