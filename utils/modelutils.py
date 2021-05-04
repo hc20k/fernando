@@ -11,7 +11,7 @@ def check_model_paths(encoder_path: Path, synthesizer_path: Path, vocoder_path: 
 
     # If none of the paths exist, remind the user to download models if needed
     print("********************************************************************************")
-    print("Error: Model files not found. Follow these instructions to get and install the models:")
+    print("Error: Model files not found. Follow these instructions to get and install the models (instructions are the same for Fernando):")
     print("https://github.com/CorentinJ/Real-Time-Voice-Cloning/wiki/Pretrained-models")
     print("********************************************************************************\n")
     quit(-1)
