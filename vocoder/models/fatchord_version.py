@@ -258,6 +258,7 @@ class WaveRNN(nn.Module):
 
 
     def gen_display(self, i, seq_len, b_size, gen_rate):
+        return
         pbar = progbar(i, seq_len)
         msg = f'| {pbar} {i*b_size}/{seq_len*b_size} | Batch Size: {b_size} | Gen Rate: {gen_rate:.1f}kHz | '
         stream(msg)

@@ -22,7 +22,7 @@ class VCWrapper():
     
     def load(self,voice_wav_path):
         encoder.load_model(Path("encoder/saved_models/pretrained.pt"))
-        self.synthesizer = Synthesizer(Path("synthesizer/saved_models/pretrained/pretrained.pt"))
+        self.synthesizer = Synthesizer(Path("synthesizer/saved_models/pretrained/pretrained.pt"), verbose=False)
         vocoder.load_model(Path("vocoder/saved_models/pretrained/pretrained.pt"))
 
         preprocessed_wav = encoder.preprocess_wav(voice_wav_path)

@@ -4,6 +4,8 @@ import os
 from colored import fg, bg, attr
 from fernando import Fernando
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
 settings = {}
 microphone_idx = -1
 
@@ -55,11 +57,30 @@ def get_input_speech():
     with sr.Microphone(microphone_idx) as src:
         audio = recognizer.listen(src)
     
-    return recognizer.recognize_google(audio)
+    try:
+        recognized = recognizer.recognize_google(audio, language="en-EN")
+    except BaseException as e:
+        print("Speech recognition error: "+str(e))
+        return None
+    else:
+        return recognized
 
+    return None
+
+def run_test():
+    print("[+] Running test...")
+    bot.say("Hi! My name is Fernando. You can talk to me just like you would talk to any other human!")
 
 def init():
     global bot
+
+    if not os.path.exists("voc.wav"):
+        print("Error: Fernando's 'voc.wav' file doesn't exist. Please place a short .wav file of the voice you would like Fernando to have in the project root.")
+        exit(-1)
+
+    # configure microphone
+    configure_mic()
+
     print("Fernando is waking up...")
 
     # setup fernando
@@ -67,11 +88,22 @@ def init():
     bot.load()
     print("[+] Loaded!")
 
-    # configure microphone
-    configure_mic()
+    # test
+    run_test()
 
     # converse
-    response = bot.generate_response("Hello fernando")
+    while True:
+        print("Fernando is listening...")
+        input_speech = get_input_speech()
+        if input_speech is None:
+            print("Fernando didn't understand that, please try again.")
+            continue
+        
+        print(f"You: {input_speech}")
+        print("Fernando is thinking...")
+        response = bot.generate_response(input_speech)
+        bot.say(response)
+        print(f"Fernando: {response}")
 
     # text to speech
     bot.say(response)

@@ -3,6 +3,10 @@ import torch
 import voice
 from tqdm import tqdm
 import simpleaudio as sa
+import utils.modelutils as modelutils
+from pathlib import Path
+import sounddevice as sd
+import numpy as np
 
 class Fernando():
     def __init__(self):
@@ -11,6 +15,8 @@ class Fernando():
         pass
 
     def load(self):
+        modelutils.check_model_paths(Path("encoder/saved_models/pretrained.pt"), Path("synthesizer/saved_models/pretrained/pretrained.pt"), Path("vocoder/saved_models/pretrained/pretrained.pt"))
+
         with tqdm(total=3) as bar:
             bar.set_description("Loading tokenizer")
             self.tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
@@ -38,10 +44,11 @@ class Fernando():
     
     def say(self, text):
         wav = self.vc.generate_wav(text)
-        wo = sa.WaveObject(wav)
-        wo.sample_rate = self.vc.synthesizer.sample_rate
-        play = wo.play() 
-        # To stop after playing the whole audio
-        play.wait_done()  
-        play.stop()
+
+        # debug: save for testing because AUDIO IS BUGGED
+        # import soundfile as sf
+        # sf.write("output.wav", wav.astype(np.float32), self.vc.synthesizer.sample_rate)
+
+        sd.stop()
+        sd.play(wav, self.vc.synthesizer.sample_rate, blocking=True)
 

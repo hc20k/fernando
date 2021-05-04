@@ -4,3 +4,4 @@ __pycache__/
 test/
 *.pt
 mic_idx.txt
+output.wav
