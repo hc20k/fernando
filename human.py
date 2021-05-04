@@ -1,7 +1,6 @@
 import speech_recognition as sr
 import configparser
 import os
-from colored import fg, bg, attr
 from fernando import Fernando
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
@@ -19,10 +18,15 @@ def configure_mic(skip_listing=False):
         # load saved mic idx
         midx_fp = open("mic_idx.txt","r")
         microphone_idx = int(midx_fp.read())
-        midx_fp.close()
 
-        print(f"Loaded mic index from file.")
-        return
+        if microphone_idx > len(sr.Microphone.list_microphone_names()):
+            print("Microphone index mismatch!")
+            midx_fp.close()
+        else:
+            midx_fp.close()
+
+            print(f"Loaded mic index from file. {sr.Microphone.list_microphone_names()[microphone_idx]}")
+            return
 
     if len(sr.Microphone.list_microphone_names()) > 0:
         if not skip_listing:

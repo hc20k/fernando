@@ -2,7 +2,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import voice
 from tqdm import tqdm
-import simpleaudio as sa
 import utils.modelutils as modelutils
 from pathlib import Path
 import sounddevice as sd
